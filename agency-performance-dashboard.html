@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meridian Search Partners — Weekly Performance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0e1520;
+    --bg-grad: #0a1119;
+    --panel: #151f2c;
+    --panel-2: #121a25;
+    --border: #263344;
+    --border-soft: #1c2733;
+    --board: #0a0e13;
+    --flap: #1b232d;
+    --flap-edge: #232e3a;
+    --amber: #e8a93a;
+    --amber-dim: #b58330;
+    --amber-wash: rgba(232,169,58,0.10);
+    --teal: #4dbfa1;
+    --coral: #e2725b;
+    --text: #eeeae2;
+    --text-dim: #8b96a5;
+    --text-faint: #566072;
+    --radius: 10px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #101a27 0%, transparent 60%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-grad) 100%);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    padding: 28px 20px 60px;
+  }
+
+  @media (min-width:700px){ body{ padding: 44px 40px 70px; } }
+
+  .wrap{ max-width:1120px; margin:0 auto; }
+
+  a, button{ font-family:inherit; }
+
+  /* ---------- Focus ---------- */
+  :focus-visible{ outline:2px solid var(--amber); outline-offset:2px; border-radius:4px; }
+
+  /* ---------- Header ---------- */
+  .topline{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; margin-bottom:26px; flex-wrap:wrap;
+  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .mark{
+    width:38px; height:38px; border-radius:8px;
+    background: linear-gradient(155deg, var(--amber) 0%, var(--amber-dim) 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:13px;
+    color:#1a1206; letter-spacing:-0.5px; flex-shrink:0;
+    box-shadow: 0 4px 14px rgba(232,169,58,0.18);
+  }
+  .brand-text h1{
+    font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:17px;
+    letter-spacing:0.4px; margin:0 0 2px; text-transform:uppercase;
+  }
+  .brand-text p{
+    margin:0; font-size:12px; color:var(--text-dim); letter-spacing:0.2px;
+  }
+  .status-cluster{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .live-pill{
+    display:flex; align-items:center; gap:7px;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.5px;
+    color:var(--teal); background:rgba(77,191,161,0.09);
+    border:1px solid rgba(77,191,161,0.25); padding:5px 10px 5px 8px; border-radius:20px;
+  }
+  .live-dot{
+    width:6px; height:6px; border-radius:50%; background:var(--teal);
+    box-shadow:0 0 0 0 rgba(77,191,161,0.6);
+    animation: pulse 2.2s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(77,191,161,0.55); }
+    70%{ box-shadow:0 0 0 7px rgba(77,191,161,0); }
+    100%{ box-shadow:0 0 0 0 rgba(77,191,161,0); }
+  }
+  .sample-pill{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.8px;
+    color:var(--text-faint); border:1px solid var(--border); padding:5px 10px;
+    border-radius:20px; text-transform:uppercase;
+  }
+  .range{
+    text-align:right; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-dim);
+  }
+  .range strong{ color:var(--text); display:block; font-size:12.5px; margin-bottom:2px; }
+
+  /* ---------- Board ---------- */
+  .board{
+    background: var(--board);
+    border:1px solid #1a222c;
+    border-radius: 16px;
+    padding: 22px 18px;
+    margin-bottom: 22px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.03), 0 20px 50px -25px rgba(0,0,0,0.7);
+  }
+  .board-grid{
+    display:grid; grid-template-columns: repeat(2, 1fr); gap:14px;
+  }
+  @media (min-width:700px){ .board-grid{ grid-template-columns: repeat(4, 1fr); gap:16px; } }
+
+  .kpi{ min-width:0; }
+  .kpi-label{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:1.2px;
+    color:var(--text-faint); text-transform:uppercase; margin-bottom:10px;
+    display:flex; align-items:center; gap:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .kpi-label::before{ content:'▸'; color:var(--amber-dim); flex-shrink:0; }
+
+  .flap-row{ display:flex; align-items:center; gap:3px; flex-wrap:nowrap; }
+  .flap-cell{
+    background: linear-gradient(180deg, var(--flap) 0%, #171f28 100%);
+    border:1px solid var(--flap-edge);
+    border-radius:4px;
+    min-width:19px; height:38px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:19px;
+    color:var(--amber);
+    position:relative;
+    transform-style:preserve-3d;
+    transition: transform .12s ease-out;
+    flex-shrink:0;
+  }
+  .flap-cell::after{
+    content:''; position:absolute; left:0; right:0; top:50%; height:1px;
+    background:rgba(0,0,0,0.45);
+  }
+  .flap-cell.flip{ transform: rotateX(55deg) scaleY(0.9); }
+  .flap-cell.static{ color:var(--text-dim); font-weight:500; font-size:16px; background:transparent; border-color:transparent; min-width:8px; }
+  .flap-suffix{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--text-faint);
+    margin-left:8px; letter-spacing:0.5px; align-self:center;
+  }
+
+  @media (max-width:420px){
+    .flap-cell{ min-width:15px; height:32px; font-size:15px; }
+    .flap-cell.static{ min-width:6px; font-size:13px; }
+  }
+
+  /* ---------- Panels ---------- */
+  .grid-2{ display:grid; grid-template-columns:1fr; gap:18px; margin-bottom:18px; }
+  @media (min-width:900px){ .grid-2{ grid-template-columns: 1.05fr 0.95fr; } }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--border-soft);
+    border-radius: var(--radius);
+    padding:20px 18px 22px;
+  }
+  .panel-head{
+    display:flex; align-items:baseline; justify-content:space-between; margin-bottom:16px;
+    padding-bottom:12px; border-bottom:1px solid var(--border-soft);
+  }
+  .panel-head h2{
+    font-family:'Space Grotesk', sans-serif; font-size:13.5px; font-weight:600;
+    letter-spacing:0.6px; text-transform:uppercase; margin:0; color:var(--text);
+  }
+  .panel-head span{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-faint);
+  }
+
+  /* ---------- Leaderboard ---------- */
+  .desk-row{
+    display:grid; grid-template-columns: 26px 1fr auto; align-items:center;
+    gap:12px; padding:10px 4px; border-radius:6px;
+    transition: background .15s;
+  }
+  .desk-row:hover{ background:rgba(255,255,255,0.02); }
+  .desk-row + .desk-row{ border-top:1px solid var(--border-soft); }
+  .rank{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; font-weight:600;
+    color:var(--text-faint); text-align:center;
+  }
+  .rank.gold{ color:var(--amber); }
+  .desk-name{ font-size:13.5px; font-weight:500; margin-bottom:5px; }
+  .desk-bar-track{
+    height:5px; background:var(--border-soft); border-radius:3px; overflow:hidden; max-width:220px;
+  }
+  .desk-bar-fill{ height:100%; background:linear-gradient(90deg, var(--amber-dim), var(--amber)); border-radius:3px; }
+  .desk-nums{ text-align:right; }
+  .desk-rev{ font-family:'IBM Plex Mono', monospace; font-size:13.5px; font-weight:600; color:var(--text); }
+  .desk-count{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--text-faint); margin-top:2px; }
+
+  /* ---------- Funnel ---------- */
+  .funnel-row{
+    display:grid; grid-template-columns: 96px 1fr 34px; align-items:center; gap:10px;
+  }
+  .funnel-stage{
+    font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.5px;
+    color:var(--text-dim); text-transform:uppercase;
+  }
+  .funnel-track{
+    height:20px; background:var(--border-soft); border-radius:4px; overflow:hidden;
+  }
+  .funnel-fill{
+    height:100%; border-radius:4px;
+    background: linear-gradient(90deg, var(--amber-dim), var(--amber));
+  }
+  .funnel-count{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; text-align:right;
+  }
+  .funnel-conv{
+    display:grid; grid-template-columns:96px 1fr 34px; gap:10px; margin:3px 0;
+  }
+  .funnel-conv span{
+    grid-column:2; font-family:'IBM Plex Mono', monospace; font-size:10px;
+    color:var(--text-faint); padding-left:2px;
+  }
+
+  /* ---------- Closed table ---------- */
+  .panel-wide{ margin-bottom:0; }
+  .job-table{ width:100%; border-collapse:collapse; }
+  .job-table thead th{
+    text-align:left; font-family:'IBM Plex Mono', monospace; font-size:10px;
+    letter-spacing:0.8px; text-transform:uppercase; color:var(--text-faint);
+    padding:0 10px 10px; font-weight:500; border-bottom:1px solid var(--border-soft);
+  }
+  .job-table th.num, .job-table td.num{ text-align:right; }
+  .job-table tbody td{
+    padding:12px 10px; font-size:13px; border-bottom:1px solid var(--border-soft);
+  }
+  .job-table tbody tr:last-child td{ border-bottom:none; }
+  .job-table tbody tr:hover{ background:rgba(255,255,255,0.02); }
+  .role-cell{ font-weight:500; }
+  .client-cell, .recruiter-cell{ color:var(--text-dim); }
+  .fee-cell{ font-family:'IBM Plex Mono', monospace; font-weight:600; color:var(--amber); }
+  .date-cell{ font-family:'IBM Plex Mono', monospace; color:var(--text-dim); font-size:12px; }
+  .stamp{
+    display:inline-block; font-family:'IBM Plex Mono', monospace; font-size:9.5px;
+    color:var(--teal); border:1px solid rgba(77,191,161,0.35); background:rgba(77,191,161,0.08);
+    padding:2px 6px; border-radius:4px; letter-spacing:0.5px;
+  }
+
+  /* mobile job cards */
+  @media (max-width:640px){
+    .job-table thead{ display:none; }
+    .job-table, .job-table tbody, .job-table tr, .job-table td{ display:block; width:100%; }
+    .job-table tbody tr{
+      border:1px solid var(--border-soft); border-radius:8px; margin-bottom:10px; padding:12px 4px;
+    }
+    .job-table tbody td{ border-bottom:none; padding:4px 10px; }
+    .job-table td::before{
+      content:attr(data-label); display:inline-block; width:64px;
+      font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--text-faint);
+      text-transform:uppercase; letter-spacing:0.5px;
+    }
+    .job-table td.num{ text-align:left; }
+  }
+
+  /* ---------- Footer ---------- */
+  .footer{
+    margin-top:26px; padding-top:16px; border-top:1px solid var(--border-soft);
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+  .footer p{
+    margin:0; font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--text-faint); letter-spacing:0.3px;
+  }
+  .footer .flow{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .flow-chip{
+    font-family:'IBM Plex Mono', monospace; font-size:10px; color:var(--text-dim);
+    border:1px solid var(--border-soft); padding:3px 8px; border-radius:12px;
+  }
+  .flow-arrow{ color:var(--text-faint); font-size:10px; }
+
+  @media (prefers-reduced-motion: reduce){
+    .live-dot{ animation:none; }
+    .flap-cell{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topline">
+    <div class="brand">
+      <div class="mark">MSP</div>
+      <div class="brand-text">
+        <h1>Meridian Search Partners</h1>
+        <p>Weekly Performance — Recruitment OS</p>
+      </div>
+    </div>
+    <div class="status-cluster">
+      <div class="live-pill"><span class="live-dot"></span> SYNCED</div>
+      <div class="sample-pill" id="data-pill">Sample data</div>
+      <div class="range"><strong>Jul 7 – Jul 13, 2026</strong>Auto-generated Mon 07:00</div>
+    </div>
+  </div>
+
+  <div class="board" id="board">
+    <div class="board-grid">
+
+      <div class="kpi">
+        <div class="kpi-label">Revenue</div>
+        <div class="flap-row" id="revenue-flap" data-final="$174,600" style="flex-wrap:wrap;"></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">Placements</div>
+        <div class="flap-row" id="placements-flap" data-final="07"></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">Interviews Booked</div>
+        <div class="flap-row" data-final="23"></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">Avg Time to Fill</div>
+        <div class="flap-row" style="align-items:center;" data-final="18" data-suffix="DAYS"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="grid-2">
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Desk Leaderboard</h2>
+        <span>By revenue, this week</span>
+      </div>
+
+      <div class="desk-row">
+        <div class="rank gold">01</div>
+        <div>
+          <div class="desk-name">J. Alvarez</div>
+          <div class="desk-bar-track"><div class="desk-bar-fill" style="width:100%"></div></div>
+        </div>
+        <div class="desk-nums">
+          <div class="desk-rev">$79,200</div>
+          <div class="desk-count">3 placements</div>
+        </div>
+      </div>
+
+      <div class="desk-row">
+        <div class="rank">02</div>
+        <div>
+          <div class="desk-name">R. Okafor</div>
+          <div class="desk-bar-track"><div class="desk-bar-fill" style="width:69%"></div></div>
+        </div>
+        <div class="desk-nums">
+          <div class="desk-rev">$54,800</div>
+          <div class="desk-count">2 placements</div>
+        </div>
+      </div>
+
+      <div class="desk-row">
+        <div class="rank">03</div>
+        <div>
+          <div class="desk-name">T. Whitfield</div>
+          <div class="desk-bar-track"><div class="desk-bar-fill" style="width:23%"></div></div>
+        </div>
+        <div class="desk-nums">
+          <div class="desk-rev">$18,400</div>
+          <div class="desk-count">1 placement</div>
+        </div>
+      </div>
+
+      <div class="desk-row">
+        <div class="rank">04</div>
+        <div>
+          <div class="desk-name">M. Sato</div>
+          <div class="desk-bar-track"><div class="desk-bar-fill" style="width:28%"></div></div>
+        </div>
+        <div class="desk-nums">
+          <div class="desk-rev">$22,200</div>
+          <div class="desk-count">1 placement</div>
+        </div>
+      </div>
+
+      <div class="desk-row">
+        <div class="rank">05</div>
+        <div>
+          <div class="desk-name">D. Reyes</div>
+          <div class="desk-bar-track"><div class="desk-bar-fill" style="width:3%"></div></div>
+        </div>
+        <div class="desk-nums">
+          <div class="desk-rev">$0</div>
+          <div class="desk-count">in pipeline</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Pipeline Health</h2>
+        <span>Sourced → Placed</span>
+      </div>
+
+      <div class="funnel-row">
+        <div class="funnel-stage">Sourced</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:100%"></div></div>
+        <div class="funnel-count">142</div>
+      </div>
+      <div class="funnel-conv"><span>↓ 62% screened</span></div>
+
+      <div class="funnel-row">
+        <div class="funnel-stage">Screened</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:62%"></div></div>
+        <div class="funnel-count">88</div>
+      </div>
+      <div class="funnel-conv"><span>↓ 47% submitted</span></div>
+
+      <div class="funnel-row">
+        <div class="funnel-stage">Submitted</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:29%"></div></div>
+        <div class="funnel-count">41</div>
+      </div>
+      <div class="funnel-conv"><span>↓ 46% interviewing</span></div>
+
+      <div class="funnel-row">
+        <div class="funnel-stage">Interviewing</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:13%"></div></div>
+        <div class="funnel-count">19</div>
+      </div>
+      <div class="funnel-conv"><span>↓ 47% offer out</span></div>
+
+      <div class="funnel-row">
+        <div class="funnel-stage">Offer Out</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:6%"></div></div>
+        <div class="funnel-count">9</div>
+      </div>
+      <div class="funnel-conv"><span>↓ 78% placed</span></div>
+
+      <div class="funnel-row">
+        <div class="funnel-stage" style="color:var(--teal)">Placed</div>
+        <div class="funnel-track"><div class="funnel-fill" style="width:5%; background:linear-gradient(90deg, var(--teal), #6fd4ba)"></div></div>
+        <div class="funnel-count" style="color:var(--teal)">7</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-wide">
+    <div class="panel-head">
+      <h2>Closed This Week</h2>
+      <span id="jobs-count-label">7 placements</span>
+    </div>
+    <table class="job-table">
+      <thead>
+        <tr>
+          <th>Candidate</th><th>Client</th><th>Recruiter</th><th class="num">Fee</th><th>Date</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="jobs-tbody">
+        <tr>
+          <td data-label="Role" class="role-cell">Senior DevOps Engineer</td>
+          <td data-label="Client" class="client-cell">Northwind Logistics</td>
+          <td data-label="Recruiter" class="recruiter-cell">J. Alvarez</td>
+          <td data-label="Fee" class="num fee-cell">$32,000</td>
+          <td data-label="Date" class="date-cell">Jul 8</td>
+          <td><span class="stamp">✓ FILLED</span></td>
+        </tr>
+        <tr>
+          <td data-label="Role" class="role-cell">VP of Sales</td>
+          <td data-label="Client" class="client-cell">Larkspur Health</td>
+          <td data-label="Recruiter" class="recruiter-cell">R. Okafor</td>
+          <td data-label="Fee" class="num fee-cell">$41,500</td>
+          <td data-label="Date" class="date-cell">Jul 9</td>
+          <td><span class="stamp">✓ FILLED</span></td>
+        </tr>
+        <tr>
+          <td data-label="Role" class="role-cell">Staff Accountant</td>
+          <td data-label="Client" class="client-cell">Bellcrest Retail</td>
+          <td data-label="Recruiter" class="recruiter-cell">T. Whitfield</td>
+          <td data-label="Fee" class="num fee-cell">$18,400</td>
+          <td data-label="Date" class="date-cell">Jul 10</td>
+          <td><span class="stamp">✓ FILLED</span></td>
+        </tr>
+        <tr>
+          <td data-label="Role" class="role-cell">Product Designer</td>
+          <td data-label="Client" class="client-cell">Northwind Logistics</td>
+          <td data-label="Recruiter" class="recruiter-cell">J. Alvarez</td>
+          <td data-label="Fee" class="num fee-cell">$24,800</td>
+          <td data-label="Date" class="date-cell">Jul 11</td>
+          <td><span class="stamp">✓ FILLED</span></td>
+        </tr>
+        <tr>
+          <td data-label="Role" class="role-cell">Account Executive</td>
+          <td data-label="Client" class="client-cell">Ferrous Metals Co.</td>
+          <td data-label="Recruiter" class="recruiter-cell">R. Okafor</td>
+          <td data-label="Fee" class="num fee-cell">$13,300</td>
+          <td data-label="Date" class="date-cell">Jul 11</td>
+          <td><span class="stamp">✓ FILLED</span></td>
+        </tr>
+        <tr>
+          <td data-label="Role" class="role-cell">Data Analyst</td>
+          <td data-label="Client" class="client-cell">Larkspur Health</td>
+          <td data-label="Recruiter" class="recruiter-cell">M. Sato</td>
+          <td data-label="Fee" class="num fee-cell">$22,200</td>
+          <td data-label="Date" class="date-cell">Jul 12</td>
+          <td><span class="stamp">✓ FILLED</span></td>
+        </tr>
+        <tr>
+          <td data-label="Role" class="role-cell">Fullstack Engineer</td>
+          <td data-label="Client" class="client-cell">Vantage Freight</td>
+          <td data-label="Recruiter" class="recruiter-cell">J. Alvarez</td>
+          <td data-label="Fee" class="num fee-cell">$22,400</td>
+          <td data-label="Date" class="date-cell">Jul 12</td>
+          <td><span class="stamp">✓ FILLED</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <p>Meridian Search Partners · Recruitment OS by Pixlforge AI</p>
+    <div class="flow">
+      <span class="flow-chip">Airtable</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-chip">Make.com</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-chip">This board</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-chip">Monday email</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ---------- Split-flap renderer (unchanged) ----------
+  function buildFlap(container){
+    var final = container.getAttribute('data-final');
+    var suffix = container.getAttribute('data-suffix');
+    var chars = final.split('');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    container.innerHTML = '';
+
+    chars.forEach(function(ch, idx){
+      var cell = document.createElement('div');
+      var isDigit = /[0-9]/.test(ch);
+      cell.className = 'flap-cell' + (isDigit ? '' : ' static');
+      cell.textContent = isDigit ? '0' : ch;
+      container.appendChild(cell);
+
+      if(isDigit && !reduced){
+        var delay = 200 + idx * 90;
+        var ticks = 9 + Math.floor(Math.random()*5);
+        var t = 0;
+        setTimeout(function(){
+          var iv = setInterval(function(){
+            cell.classList.add('flip');
+            setTimeout(function(){ cell.classList.remove('flip'); }, 120);
+            if(t >= ticks){
+              cell.textContent = ch;
+              clearInterval(iv);
+              return;
+            }
+            cell.textContent = Math.floor(Math.random()*10);
+            t++;
+          }, 95);
+        }, delay);
+      } else if(isDigit){
+        cell.textContent = ch;
+      }
+    });
+
+    if(suffix){
+      var s = document.createElement('span');
+      s.className = 'flap-suffix';
+      s.textContent = suffix;
+      container.appendChild(s);
+    }
+  }
+
+  // ---------- Live data wiring ----------
+  var WEBHOOK_URL = 'https://hook.eu1.make.com/jfkl206o69x6t96ggxb5ulj7a1gt72bv';
+
+  function escapeHtml(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function formatCurrency(n){
+    return '$' + Math.round(n || 0).toLocaleString('en-US');
+  }
+
+  function formatDate(d){
+    if(!d) return '—';
+    var dt = new Date(d);
+    if(isNaN(dt.getTime())) return escapeHtml(d);
+    return dt.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+  }
+
+  function groupByRecruiter(records){
+    var map = {};
+    records.forEach(function(r){
+      var name = (r['Recruiter'] || 'Unassigned').toString().trim() || 'Unassigned';
+      var fee = parseFloat(r['Fee/Revenue']) || 0;
+      if(!map[name]) map[name] = { name: name, revenue: 0, placements: 0 };
+      map[name].revenue += fee;
+      map[name].placements += 1;
+    });
+    return Object.keys(map).map(function(k){ return map[k]; })
+      .sort(function(a,b){ return b.revenue - a.revenue; });
+  }
+
+  function renderLeaderboard(list){
+    var firstRow = document.querySelector('.desk-row');
+    if(!firstRow) return;
+    var panel = firstRow.closest('.panel');
+    panel.querySelectorAll('.desk-row').forEach(function(el){ el.remove(); });
+
+    var maxRev = Math.max.apply(null, list.map(function(d){ return d.revenue; }).concat([1]));
+
+    list.forEach(function(d, i){
+      var pct = d.revenue > 0 ? Math.max(3, Math.round((d.revenue / maxRev) * 100)) : 2;
+      var row = document.createElement('div');
+      row.className = 'desk-row';
+      row.innerHTML =
+        '<div class="rank' + (i === 0 ? ' gold' : '') + '">' + String(i + 1).padStart(2, '0') + '</div>' +
+        '<div>' +
+          '<div class="desk-name">' + escapeHtml(d.name) + '</div>' +
+          '<div class="desk-bar-track"><div class="desk-bar-fill" style="width:' + pct + '%"></div></div>' +
+        '</div>' +
+        '<div class="desk-nums">' +
+          '<div class="desk-rev">' + formatCurrency(d.revenue) + '</div>' +
+          '<div class="desk-count">' + d.placements + (d.placements === 1 ? ' placement' : ' placements') + '</div>' +
+        '</div>';
+      panel.appendChild(row);
+    });
+  }
+
+  function renderJobs(records){
+    var tbody = document.getElementById('jobs-tbody');
+    if(!tbody) return;
+    tbody.innerHTML = records.map(function(r){
+      var fee = parseFloat(r['Fee/Revenue']) || 0;
+      return '<tr>' +
+        '<td data-label="Candidate" class="role-cell">' + escapeHtml(r['Candidate Name']) + '</td>' +
+        '<td data-label="Client" class="client-cell">' + escapeHtml(r['Client/Company']) + '</td>' +
+        '<td data-label="Recruiter" class="recruiter-cell">' + escapeHtml(r['Recruiter']) + '</td>' +
+        '<td data-label="Fee" class="num fee-cell">' + formatCurrency(fee) + '</td>' +
+        '<td data-label="Date" class="date-cell">' + formatDate(r['Date Placed']) + '</td>' +
+        '<td><span class="stamp">✓ FILLED</span></td>' +
+      '</tr>';
+    }).join('');
+
+    var label = document.getElementById('jobs-count-label');
+    if(label) label.textContent = records.length + (records.length === 1 ? ' placement' : ' placements');
+  }
+
+  async function loadLiveData(){
+    try{
+      var res = await fetch(WEBHOOK_URL);
+      if(!res.ok) throw new Error('Webhook responded with ' + res.status);
+      var records = await res.json();
+      if(!Array.isArray(records) || records.length === 0) throw new Error('No records returned');
+
+      var totalRevenue = records.reduce(function(sum, r){
+        return sum + (parseFloat(r['Fee/Revenue']) || 0);
+      }, 0);
+
+      var revenueFlap = document.getElementById('revenue-flap');
+      var placementsFlap = document.getElementById('placements-flap');
+      if(revenueFlap) revenueFlap.setAttribute('data-final', '$' + Math.round(totalRevenue).toLocaleString('en-US'));
+      if(placementsFlap) placementsFlap.setAttribute('data-final', String(records.length).padStart(2, '0'));
+
+      renderLeaderboard(groupByRecruiter(records));
+      renderJobs(records);
+
+      var pill = document.getElementById('data-pill');
+      if(pill){
+        pill.textContent = 'Live data';
+        pill.style.color = 'var(--teal)';
+        pill.style.borderColor = 'rgba(77,191,161,0.35)';
+      }
+    } catch(err){
+      // Webhook unreachable or empty — dashboard keeps showing the sample data already in the HTML.
+      console.warn('Live data unavailable, showing sample data:', err.message);
+    } finally {
+      // Interviews Booked, Avg Time to Fill, and Pipeline Health stay sample data —
+      // there's no Airtable source for those yet.
+      document.querySelectorAll('.flap-row').forEach(buildFlap);
+    }
+  }
+
+  loadLiveData();
+</script>
+
+</body>
+</html>
